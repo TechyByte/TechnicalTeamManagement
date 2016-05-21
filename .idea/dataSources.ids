@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="dataSourceStorage">
+  <data-source name="MySQL - ttmgmt@db.ttmgmt.techybyte.co.uk" uuid="98e8d6c0-dd22-44e3-aa37-6f1b22f8eb55">
+    <database-info product="MySQL" version="5.6.27-log" jdbc-version="4.0" driver-name="MySQL Connector Java" driver-version="mysql-connector-java-5.1.35 ( Revision: 5fb9c5849535c13917c2cf9baaece6ef9693ef27 )">
+      <extra-name-characters>#@</extra-name-characters>
+      <identifier-quote-string>`</identifier-quote-string>
+    </database-info>
+    <case-sensitivity plain-identifiers="exact" quoted-identifiers="exact"/>
+    <schema name="" catalog="ttmgmt"/>
+    <table name="contacts" schema="" catalog="ttmgmt" type="TABLE">
+      <column name="contactId" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="firstName" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="lastName" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="nickname" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="organisation" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="dayPhone" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="evePhone" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="email" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="personType" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+    </table>
+    <table name="permissions" schema="" catalog="ttmgmt" type="TABLE">
+      <column name="permId" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="permName" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="friendlyName" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="level1" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
+      <column name="level2" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
+      <column name="level3" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
+      <column name="level4" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
+      <column name="level5" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
+    </table>
+    <table name="person_types" schema="" catalog="ttmgmt" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="name" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+    </table>
+    <table name="sessions" schema="" catalog="ttmgmt" type="TABLE">
+      <column name="sessionId" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="userId" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="expiry" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="startIp" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="lastIP" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="platform" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+    </table>
+    <table name="users" schema="" catalog="ttmgmt" type="TABLE">
+      <column name="userId" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="contactId" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="username" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="password" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="salt" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="permLevel" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="enabled" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
+    </table>
+  </data-source>
+</component>
