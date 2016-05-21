@@ -2,6 +2,7 @@
 
 include_once("../includes/config.php");
 include_once("../includes/mysql.php");
+include_once("../permissions/includes.php");
 
 /**
  * @param $sessionToken
@@ -12,37 +13,46 @@ include_once("../includes/mysql.php");
 function viewContacts($sessionToken) {
     global $contactsTable;
     if (canDoFromSession($sessionToken, "Contacts.View")) {
-        switch (strtolower($_GET["filter"])) {
-            case "id":
-                if (isset($_POST["id"]) && !empty($_POST["id"])) {
-                    $whereClause = " WHERE `contactId` = " . $_POST["id"];
-                } else {
-                    return 0;
-                }
-                break;
-            case "name":
-                if (isset($_POST["nameQuery"]) && !empty($_POST["nameQuery"])) {
-                    $whereClause = " WHERE `firstName` LIKE '%" . $_POST["nameQuery"] . "%' OR `lastName` LIKE '%" . $_POST["nameQuery"] . "%'";
-                } else {
-                    return 0;
-                }
-                break;
-            default:
-                $whereClause = "";
-                break;
+        if (isset($_GET["filter"])) {
+            switch (strtolower($_GET["filter"])) {
+                case "id":
+                    if (isset($_POST["id"]) && !empty($_POST["id"])) {
+                        $whereClause = " WHERE `contactId` = " . $_POST["id"];
+                    } else {
+                        return 0;
+                    }
+                    break;
+                case "name":
+                    if (isset($_POST["nameQuery"]) && !empty($_POST["nameQuery"])) {
+                        $whereClause = " WHERE `firstName` LIKE '%" . $_POST["nameQuery"] . "%' OR `lastName` LIKE '%" . $_POST["nameQuery"] . "%'";
+                    } else {
+                        return 0;
+                    }
+                    break;
+                default:
+                    $whereClause = "";
+                    break;
+            }
+        } else {
+            $whereClause = "";
         }
-        switch (strtolower($_GET["detail"])) {
-            case "name":
-                $fieldClause = "`contactId`, `firstName`, `lastName`, `nickname`, `organisation`";
-                $fields = ["contact_id", "first_name", "last_name", "nickname", "organisation"];
-                break;
-            case "contact":
-                $fieldClause = "`contactId`, `firstName`, `lastName`, `dayPhone`, `evePhone`, `email`";
-                $fields = ["contact_id", "first_name", "last_name", "day_phone", "eve_phone", "email"];
-                break;
-            default:
-                $fieldClause = "*";
-                $fields = ["contact_id", "first_name", "last_name", "nickname", "organisation", "day_phone", "eve_phone", "email", "person_type"];
+        if (isset($_GET["detail"])) {
+            switch (strtolower($_GET["detail"])) {
+                case "name":
+                    $fieldClause = "`contactId`, `firstName`, `lastName`, `nickname`, `organisation`";
+                    $fields = ["contact_id", "first_name", "last_name", "nickname", "organisation"];
+                    break;
+                case "contact":
+                    $fieldClause = "`contactId`, `firstName`, `lastName`, `dayPhone`, `evePhone`, `email`";
+                    $fields = ["contact_id", "first_name", "last_name", "day_phone", "eve_phone", "email"];
+                    break;
+                default:
+                    $fieldClause = "*";
+                    $fields = ["contact_id", "first_name", "last_name", "nickname", "organisation", "day_phone", "eve_phone", "email", "person_type"];
+            }
+        } else {
+            $fieldClause = "*";
+            $fields = ["contact_id", "first_name", "last_name", "nickname", "organisation", "day_phone", "eve_phone", "email", "person_type"];
         }
         $query = "SELECT " . $fieldClause . " FROM " . $contactsTable . $whereClause . ";";
         $results = mySQLQuery($query);
@@ -50,8 +60,8 @@ function viewContacts($sessionToken) {
         $numResults = mysqli_num_rows($results);
         if ($numResults > 0) {
             $i = 1;
-            while($row = mysqli_fetch_array($results)) {
-                $json .= "[";
+            while($row = mysqli_fetch_assoc($results)) {
+                $json .= '"' . ($i-1) . '": {';
                 $j = 0;
                 foreach ($row as $field) {
                     $json .= '"' . $fields[$j] . '": "' . $field . '"';
@@ -59,7 +69,8 @@ function viewContacts($sessionToken) {
                         $json .= ",";
                         $j+=1;
                     } else {
-                        $json .= "]";
+                        $json .= "}";
+                        $j = 0;
                     }
                 }
                 if ($i != $numResults) {

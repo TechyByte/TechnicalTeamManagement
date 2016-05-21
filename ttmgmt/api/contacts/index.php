@@ -28,14 +28,14 @@ if (isset($_POST["session"]) && !empty($_POST["session"])) {
                     $result = viewContacts($_POST["session"]);
                     if ($result == -1) {
                         http_response_code(403);
-                    } elseif ($result == 0) {
+                    } elseif ($result === 0) {
                         http_response_code(400);
                     } elseif ($result == "{[]}") {
                         http_response_code(202);
                     } else {
-                        return $result;
+                        echo $result;
                     }
-                break;
+                    break;
                 case "delete":
                     include_once("deleteContact.php");
                     $result = addContact($_POST["session"], $_POST["firstName"], $_POST["lastName"], $_POST["nickname"], $_POST["organisation"], $_POST["dayPhone"], $_POST["evePhone"], $_POST["email"], $_POST["personType"]);

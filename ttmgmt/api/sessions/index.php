@@ -31,10 +31,17 @@ if (isset($_GET["action"])) {
                 if (!empty($_POST["session"])) {
                     include_once("checkSession.php");
                     $result = checkSession($_POST["session"]);
-                    if ($result == -3 || $result == -2) {
-                        http_response_code(440);
-                    } elseif ($result == -1) {
+                    if ($result == -3) {
+                        http_response_code(401);
+                    }
+                    if ($result == -2) {
+                        http_response_code(401);
+                    }
+                    if ($result == -1) {
                         http_response_code(403);
+                    }
+                    if ($result >= 0) {
+                        http_response_code(202);
                     }
                 } else {
                     http_response_code(401);
@@ -49,7 +56,7 @@ if (isset($_GET["action"])) {
                     include_once("checkSessionExpiry.php");
                     $result = checkSessionExpiry($_POST["session"]);
                     if ($result == -3 || $result == -2) {
-                        http_response_code(440);
+                        http_response_code(401);
                     } elseif ($result == -1) {
                         http_response_code(403);
                     }
@@ -66,10 +73,10 @@ if (isset($_GET["action"])) {
                     include_once("checkSession.php");
                     if (isSessionValid($_POST["session"])) {
                         include_once("renew.php");
-                        renewSession($$_POST["session"]);
+                        renewSession($_POST["session"]);
                         http_response_code(201);
                     } else {
-                        http_response_code(440);
+                        http_response_code(401);
                     }
                 } else {
                     http_response_code(401);
@@ -84,9 +91,9 @@ if (isset($_GET["action"])) {
                     include_once("terminate.php");
                     $result = terminateSession($_POST["session"]);
                     if ($result > 0) {
-                        http_response_code(202);
+                        http_response_code(201);
                     } else {
-                        http_response_code(402);
+                        http_response_code(202);
                     }
                 } else {
                     http_response_code(401);
@@ -96,19 +103,19 @@ if (isset($_GET["action"])) {
             }
             break;
         case "user_terminate":
-            if (isset($_POST["session"]) && isset($_GET["username"])) {
-                if (!empty($_POST["session"]) && !empty($_POST["username"])) {
+            if (isset($_POST["session"]) && isset($_GET["user_id"])) {
+                if (!empty($_POST["session"]) && !empty($_GET["user_id"])) {
                     include_once("terminateAllUser.php");
-                    $result = terminateAllUserSessions($_POST["session"], $_POST["username"]);
+                    $result = terminateAllUserSessions($_POST["session"], $_GET["user_id"]);
                     if ($result > 0) {
-                        http_response_code(202);
+                        http_response_code(201);
                     } elseif ($result == 0) {
-                        http_response_code(402);
+                        http_response_code(202);
                     } else {
                         http_response_code(403);
                     }
                 } else {
-                    http_response_code(401);
+                    http_response_code(400);
                 }
             } else {
                 http_response_code(400);

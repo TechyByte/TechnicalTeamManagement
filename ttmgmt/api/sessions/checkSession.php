@@ -1,5 +1,8 @@
 <?php
 
+include_once("../includes/mysql.php");
+include_once("../includes/config.php");
+
 /**
  * @param $sessionToken
  *
@@ -11,7 +14,7 @@
  */
 function checkSession($sessionToken) {
     global $sessionTable;
-    $result = mySQLQuery("SELECT * FROM `" . $sessionTable . "` WHERE `sessionId`='" . $sessionToken . "';");
+    $result = mySQLQuery("SELECT * FROM `" . $sessionTable . "` WHERE `sessionToken`='" . $sessionToken . "';");
     if (mysqli_num_rows($result) == 1) {
         $session = mysqli_fetch_row($result);
         return time() < $session[3] ? $session[2] : -3;
