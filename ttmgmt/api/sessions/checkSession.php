@@ -14,7 +14,7 @@ function checkSession($sessionToken) {
     $result = mySQLQuery("SELECT * FROM `" . $sessionTable . "` WHERE `sessionId`='" . $sessionToken . "';");
     if (mysqli_num_rows($result) == 1) {
         $session = mysqli_fetch_row($result);
-        return currentUnix() < $session[3] ? $session[2] : -3;
+        return time() < $session[3] ? $session[2] : -3;
     } elseif (mysqli_num_rows($result) > 1) {
         return -1;
     } else {
