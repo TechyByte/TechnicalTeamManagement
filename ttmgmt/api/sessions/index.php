@@ -59,6 +59,8 @@ if (isset($_GET["action"])) {
                         http_response_code(401);
                     } elseif ($result == -1) {
                         http_response_code(403);
+                    } else {
+                        echo $result;
                     }
                 } else {
                     http_response_code(401);
